@@ -1,0 +1,50 @@
+#include<bits/stdc++.h>
+using namespace std;
+int fastFindPalindrome(string str)
+{
+     int strLength = str.length();
+     vector<int> vec;
+     int i = palLength = 0;
+     int Longest = 0;
+     while(i<strLength){
+         if((i > palLength) && (str[i - palLength - 1] == str[i]) ){
+              palLength += 2;
+              i += 1;
+              continue;
+         }
+
+         vec.push_back(palLength);
+         Longest = max (Longest, palLength);
+
+         int s = vec.size() -2;
+         int e = s - palLength;
+         bool found = false;
+         for(int j = s; j > e; j--){
+              int d = j -e -1;
+              if(vec[j]==d)
+              {
+                   palLength = d;
+                   found = true;
+                   break;
+              }
+              vec.push_back(min(d, vec[j]));
+              Longest = max (Longest, min (d, vec[j]));
+         }
+         if(!found){
+              i+=1;
+              palLength = 1;
+         }
+    }
+    vec.push_back(palLength);
+    Longest = max (Longest, palLength);
+    return Longest;
+}
+int main()
+{
+    string s;
+    int n;
+    cin >> n;
+    cin >> s;
+    cout << fastFindPalindrome(s);
+    //getch();
+}
