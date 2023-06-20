@@ -1,0 +1,55 @@
+#include<bits/stdc++.h>
+using namespace std;
+void buildLPS(string S, vector<int>& LPS)
+{
+    int m = S.size();
+    LPS[0] = 0;
+    int len = 0;
+    int i = 1;
+    while (i < m){
+        if (S[i] == S[len]){
+            len++;
+            LPS[i] = len;
+            i++;
+        }
+        else{
+            if(len) len = LPS[len - 1];
+            else{
+                LPS[i] = 0;
+                i++;
+            }
+        }
+    }
+    
+}
+void KMP(string S, string W)
+{
+    int n = W.size();
+    vector<int> LPS(n, 0);
+    buildLPS(W, LPS);
+    int i = 0, j = 0;
+    while (i < S.size()){
+        if (S[i] == W[j]){
+            i++;
+            j++;
+        }
+
+        if (j == n){
+            cout << i - j + 1 << " ";
+            j = LPS[j - 1];
+        }
+        else if (i < S.size() && S[i] != W[j]){
+            if (j)
+                j = LPS[j - 1];
+            else
+                i++;
+        }
+    }
+    
+}
+int main()
+{
+    string S,W;
+    cin>>S>>W;
+    KMP(S, W);
+}
